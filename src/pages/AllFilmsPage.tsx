@@ -10,7 +10,7 @@ const HISTORY_MONTHS = 12
 export function AllFilmsPage() {
   const [catalog, setCatalog] = useState<Film[] | null>(null)
   const [query, setQuery] = useState('')
-  const [showComingSoon, setShowComingSoon] = useState(true)
+  const [showComingSoon, setShowComingSoon] = useState(false)
   const [seenOnly, setSeenOnly] = useState(false)
   const { isSeen, markSeen, unmarkSeen } = useSeenFilms()
 
