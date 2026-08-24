@@ -25,6 +25,12 @@ export function timeInputValueToMinutes(value: string): number {
   return h * 60 + m
 }
 
+export function minutesToLabel(min: number): string {
+  const h = Math.floor(min / 60) % 24
+  const m = min % 60
+  return `${String(h).padStart(2, '0')}h${String(m).padStart(2, '0')}`
+}
+
 export function toISO(d: Date): string {
   const y = d.getFullYear()
   const m = String(d.getMonth() + 1).padStart(2, '0')

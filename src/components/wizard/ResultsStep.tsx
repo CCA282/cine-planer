@@ -2,9 +2,10 @@ import { useMemo, useState } from 'react'
 import { Button } from '../Button'
 import { PlanSummary, PlanTimeline } from '../PlanTimeline'
 import type { AvailableFilm } from '../../hooks/useCinemaProgram'
+import { useSessions } from '../../hooks/useSessions'
 import { generatePlans } from '../../lib/scheduler'
-import { getSessionsForFilm } from '../../lib/showtimeSynth'
-import type { Cinema, Plan, Session, UserPreferences } from '../../lib/types'
+import type { Cinema, Plan, UserPreferences } from '../../lib/types'
+import { ApiErrorBanner } from './ApiErrorBanner'
 import { StepActionBar } from './StepActionBar'
 import { StepHeader } from './StepHeader'
 
@@ -32,17 +33,12 @@ export function ResultsStep({
   const cinemaMap = useMemo(() => new Map(cinemas.map((c) => [c.slug, c])), [cinemas])
   const filmMap = useMemo(() => new Map(available.map((a) => [a.film.slug, a.film])), [available])
 
+  const { loading: sessionsLoading, sessions, errors } = useSessions(filmSlugs, available, date)
+
   const plans = useMemo(() => {
-    const sessions: Session[] = []
-    for (const slug of filmSlugs) {
-      const entry = available.find((a) => a.film.slug === slug)
-      if (!entry) continue
-      for (const cinemaSlug of entry.cinemaSlugs) {
-        sessions.push(...getSessionsForFilm(cinemaSlug, entry.film, date).filter((s) => s.start >= startTimeMin))
-      }
-    }
-    return generatePlans(sessions, cinemaMap, filmMap, filmSlugs, prefs, date)
-  }, [available, filmSlugs, prefs, date, startTimeMin, cinemaMap, filmMap])
+    const filtered = sessions.filter((s) => s.start >= startTimeMin)
+    return generatePlans(filtered, cinemaMap, filmMap, filmSlugs, prefs, date)
+  }, [sessions, filmSlugs, prefs, date, startTimeMin, cinemaMap, filmMap])
 
   const selectedPlan = plans.find((p) => p.id === selectedPlanId) ?? null
 
@@ -50,7 +46,16 @@ export function ResultsStep({
     <div>
       <StepHeader step={4} total={4} title="Tes plannings possibles" subtitle="Choisis la combinaison qui te convient." />
 
-      {plans.length === 0 && (
+      {errors.map((e, i) => (
+        <ApiErrorBanner
+          key={i}
+          message={`Horaires indisponibles pour "${e.filmTitle}" à ${cinemaMap.get(e.cinemaSlug)?.name ?? e.cinemaSlug} : ${e.message}`}
+        />
+      ))}
+
+      {sessionsLoading && <p className="py-8 text-center text-sm text-neutral-500">Recherche des horaires…</p>}
+
+      {!sessionsLoading && plans.length === 0 && (
         <p className="py-8 text-center text-sm text-neutral-500">
           Aucune combinaison ne fonctionne avec ces contraintes. Essaie un rythme plus serré, plus de trajet, ou moins de films.
         </p>

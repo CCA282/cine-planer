@@ -12,7 +12,13 @@
 
 const UPSTREAM = 'https://www.pathe.fr'
 
-const ALLOWED_PATH_PATTERNS = [/^\/api\/cinemas$/, /^\/api\/cinema\/[a-z0-9-]+$/, /^\/api\/cinema\/[a-z0-9-]+\/shows$/, /^\/api\/shows$/]
+const ALLOWED_PATH_PATTERNS = [
+  /^\/api\/cinemas$/,
+  /^\/api\/cinema\/[a-z0-9-]+$/,
+  /^\/api\/cinema\/[a-z0-9-]+\/shows$/,
+  /^\/api\/shows$/,
+  /^\/api\/show\/[a-z0-9-]+\/showtimes\/[a-z0-9-]+\/\d{4}-\d{2}-\d{2}$/,
+]
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -36,10 +42,16 @@ export default {
       return new Response('Not found', { status: 404, headers: CORS_HEADERS })
     }
 
-    const upstreamResponse = await fetch(`${UPSTREAM}${url.pathname}`, {
+    // pathe.fr's WAF has been observed blocking this worker outright (403, "Error from IP
+    // ...") regardless of these headers — it may be denylisting Cloudflare Workers' egress
+    // ranges rather than sniffing the User-Agent. If requests still 403 after this change, the
+    // fix is out of this worker's reach: it needs relaying from non-Cloudflare infrastructure.
+    const upstreamResponse = await fetch(`${UPSTREAM}${url.pathname}${url.search}`, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; cine-planer-relay/1.0)',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15',
         Accept: 'application/json',
+        'Accept-Language': 'fr-FR,fr;q=0.9',
+        Referer: 'https://www.pathe.fr/',
       },
       cf: { cacheTtl: 300, cacheEverything: true },
     })

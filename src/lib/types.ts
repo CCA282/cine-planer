@@ -47,17 +47,19 @@ export interface UserPreferences {
   transportMode: TransportMode | null
 }
 
-/** A single showtime instance of a film at a cinema. Precise clock time is synthesized
- * (see showtimeSynth.ts) since Pathé does not expose exact session times publicly. */
+/** A single real showtime instance of a film at a cinema, sourced from Pathé's per-show
+ * showtimes endpoint (see getRealShowtimes in patheClient.ts). */
 export interface Session {
   id: string
   cinemaSlug: string
   filmSlug: string
   date: string
-  /** Announced start time, minutes since midnight. */
+  /** Start time, minutes since midnight of `date`. */
   start: number
+  /** Real end time (credits done), minutes since midnight of `date` — can exceed 1440 when the
+   * session ends after midnight. */
+  end: number
   version: FilmVersion
-  synthetic: true
 }
 
 export interface PlanItem {

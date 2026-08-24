@@ -1,4 +1,4 @@
-import { minutesToLabel } from '../lib/showtimeSynth'
+import { minutesToLabel } from '../lib/date'
 import type { Cinema, Film, Plan } from '../lib/types'
 import { Badge } from './Badge'
 import { PosterImage } from './PosterImage'

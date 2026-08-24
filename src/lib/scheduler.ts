@@ -1,6 +1,9 @@
-import { TRAILER_BUFFER_MIN } from './showtimeSynth'
 import { estimateTravelMinutes } from './travel'
 import type { Cinema, Film, Plan, PlanItem, Session, TimingPreference, TravelPreference, TransportMode, UserPreferences } from './types'
+
+/** Estimated minutes of trailers before the film content actually starts — used to let a
+ * "tight" viewer skip them when computing their real arrival time. */
+const TRAILER_BUFFER_MIN = 15
 
 /**
  * Buffers derived from the user's timing preference. `arrivalOffset` is how many minutes after
@@ -22,13 +25,12 @@ interface Effective {
   effectiveEnd: number
 }
 
-function computeEffective(session: Session, film: Film, timing: TimingPreference): Effective {
+function computeEffective(session: Session, timing: TimingPreference): Effective {
   const cfg = TIMING_CONFIG[timing]
-  const duration = film.duration ?? 110
   return {
     session,
     effectiveStart: session.start + cfg.arrivalOffset,
-    effectiveEnd: session.start + TRAILER_BUFFER_MIN + duration,
+    effectiveEnd: session.end,
   }
 }
 
@@ -61,11 +63,10 @@ export function generatePlans(
   const cfg = TIMING_CONFIG[prefs.timing]
   const targetFilms = filmSlugs.slice(0, MAX_EXACT_FILMS)
   const sessionsByFilm = targetFilms.map((slug) => {
-    const film = films.get(slug)
-    if (!film) return []
+    if (!films.has(slug)) return []
     return sessions
       .filter((s) => s.filmSlug === slug)
-      .map((s) => computeEffective(s, film, prefs.timing))
+      .map((s) => computeEffective(s, prefs.timing))
       .sort((a, b) => a.effectiveStart - b.effectiveStart)
   })
 

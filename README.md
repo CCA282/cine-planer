@@ -24,8 +24,8 @@ npm install
 npm run dev
 ```
 
-L'app tourne en **mode démo** par défaut (voir plus bas) : aucune configuration n'est nécessaire
-pour l'essayer.
+Le relai API (voir ci-dessous) **doit être configuré** dans `.env` pour que l'app fonctionne :
+sans lui, aucune donnée n'est inventée — l'app affiche des erreurs API explicites à la place.
 
 ## Sources de données — et leurs limites
 
@@ -35,15 +35,14 @@ utilisés par pathe.fr lui-même :
 | Endpoint | Contenu | Utilisé pour |
 | --- | --- | --- |
 | `/api/cinemas` | Liste des 68 cinémas Pathé (nom, adresse, GPS) | Sélection par proximité (figé dans `src/data/cinemas.json`, un snapshot suffit — la liste des cinémas change rarement) |
-| `/api/shows` | Catalogue des films (titre, affiche, synopsis, durée, genres…) | Fiches films (snapshot dans `src/data/films.json`, rafraîchi en live si le relai est configuré) |
-| `/api/cinema/{slug}/shows` | Pour chaque film, les jours où il est réellement programmé dans ce cinéma | Disponibilité réelle par cinéma/jour (nécessite le relai, voir ci-dessous) |
+| `/api/shows` | Catalogue des films (titre, affiche, synopsis, durée, genres…) | Fiches films, en direct via le relai |
+| `/api/cinema/{slug}/shows` | Pour chaque film, les jours où il est réellement programmé dans ce cinéma | Disponibilité réelle par cinéma/jour, en direct via le relai |
+| `/api/show/{filmSlug}/showtimes/{cinemaSlug}/{date}` | Séances exactes (heure de début `time`, heure de fin `endTime`, version) | Horaires réels affichés dans les plannings, en direct via le relai |
 
-**Ce qui n'a pas été trouvé** : un endpoint public donnant l'horaire exact d'une séance (ex. "16h30
-salle 4"). Seule la disponibilité au niveau du jour est exposée. Les horaires précis affichés dans
-l'app sont donc **simulés** (générés de façon déterministe à partir de la durée réelle du film —
-voir `src/lib/showtimeSynth.ts`) : réalistes et stables entre deux rechargements, mais ce ne sont
-pas les vraies séances Pathé. Si Pathé expose un jour cet endpoint, seul `showtimeSynth.ts` est à
-remplacer, le reste de l'app (algorithme, UI) n'a pas besoin de changer.
+Tout — catalogue, programme par cinéma, horaires exacts — vient en direct de Pathé via le relai. Si
+une requête échoue (relai non configuré, indisponible, ou Pathé ne couvre pas une combinaison
+film/cinéma/date), l'app affiche un message d'erreur explicite plutôt que d'inventer une donnée de
+repli.
 
 ### CORS
 
@@ -51,14 +50,6 @@ Ces endpoints n'envoient pas de header `Access-Control-Allow-Origin` : un naviga
 les appeler directement depuis un autre domaine. Pour rester "juste un front" sans base de données
 ni logique métier côté serveur, ce repo inclut un **relai CORS minimal** (`worker/`, Cloudflare
 Worker gratuit) qui ne fait que transmettre les requêtes à pathe.fr en ajoutant les headers CORS.
-
-### Mode démo vs mode live
-
-- **Sans relai configuré (par défaut)** : la liste des cinémas et le catalogue de films sont réels
-  (bundlés dans `src/data/`, avec vraies affiches). Le programme par cinéma (quels films y jouent)
-  est simulé de façon déterministe par cinéma.
-- **Avec relai configuré** (`VITE_API_PROXY_URL` dans `.env`, voir `.env.example`) : le programme
-  par cinéma/jour vient réellement de Pathé. Les horaires précis restent simulés (cf. ci-dessus).
 
 Déployer le relai :
 

@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react'
 import { Badge } from '../Badge'
 import { Button } from '../Button'
 import { PosterImage } from '../PosterImage'
-import { isLiveModeConfigured } from '../../lib/patheClient'
 import type { AvailableFilm } from '../../hooks/useCinemaProgram'
+import { ApiErrorBanner } from './ApiErrorBanner'
 import { StepActionBar } from './StepActionBar'
 import { StepHeader } from './StepHeader'
 
@@ -46,12 +46,6 @@ export function FilmStep({
       <div className="sticky top-0 z-10 -mx-4 -mt-4 bg-neutral-950 px-4 pb-3 pt-4">
         <StepHeader step={2} total={4} title="Quels films ?" subtitle="Sélectionne les films que tu veux voir ce jour-là." />
 
-        {!isLiveModeConfigured && (
-          <p className="mb-3 rounded-lg bg-sky-500/10 px-3 py-2 text-xs text-sky-300">
-            Mode démo : catalogue Pathé réel, mais programme et horaires par cinéma simulés (aucun relais API configuré — voir README).
-          </p>
-        )}
-
         <input
           type="text"
           value={query}
@@ -67,7 +61,7 @@ export function FilmStep({
       </div>
 
       {loading && <p className="py-8 text-center text-sm text-neutral-500">Chargement du programme…</p>}
-      {error && <p className="py-4 text-sm text-red-400">{error}</p>}
+      {error && <ApiErrorBanner message={error} />}
 
       {!loading && !error && visible.length === 0 && (
         <p className="py-8 text-center text-sm text-neutral-500">Aucun film disponible dans les cinémas choisis pour cette date.</p>
