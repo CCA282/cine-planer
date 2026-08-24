@@ -43,7 +43,7 @@ export function FilmStep({
 
   return (
     <div>
-      <div className="sticky top-0 z-10 -mx-4 -mt-4 bg-neutral-950 px-4 pb-3 pt-4">
+      <div className="sticky top-0 z-10 -mx-4 -mt-4 bg-neutral-950 px-4 pb-2.5 pt-4">
         <StepHeader step={2} total={4} title="Quels films ?" subtitle="Sélectionne les films que tu veux voir ce jour-là." />
 
         <input
@@ -51,14 +51,14 @@ export function FilmStep({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Rechercher un film…"
-          className="mb-3 w-full rounded-xl border border-neutral-800 bg-neutral-900 px-3 py-2.5 text-sm placeholder:text-neutral-500 focus:border-amber-500 focus:outline-none"
+          className="w-full rounded-xl border border-neutral-800 bg-neutral-900 px-3 py-2.5 text-sm placeholder:text-neutral-500 focus:border-amber-500 focus:outline-none"
         />
-
-        <label className="flex items-center gap-2 text-sm text-neutral-400">
-          <input type="checkbox" checked={showSeen} onChange={(e) => setShowSeen(e.target.checked)} className="accent-amber-500" />
-          Afficher aussi les films déjà vus
-        </label>
       </div>
+
+      <label className="mt-3 flex items-center gap-2 text-sm text-neutral-400">
+        <input type="checkbox" checked={showSeen} onChange={(e) => setShowSeen(e.target.checked)} className="accent-amber-500" />
+        Afficher aussi les films déjà vus
+      </label>
 
       {loading && <p className="py-8 text-center text-sm text-neutral-500">Chargement du programme…</p>}
       {error && <ApiErrorBanner message={error} />}

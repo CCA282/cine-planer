@@ -11,6 +11,7 @@ import { useCinemaProgram } from '../hooks/useCinemaProgram'
 import { usePlanHistory } from '../hooks/usePlanHistory'
 import { useSavedPreferences } from '../hooks/useSavedPreferences'
 import { useSeenFilms } from '../hooks/useSeenFilms'
+import { useCompactChrome } from '../lib/chromeContext'
 import { defaultStartTimeForDate, todayISO } from '../lib/date'
 import { listCinemas } from '../lib/patheClient'
 import type { Plan, UserPreferences } from '../lib/types'
@@ -33,6 +34,8 @@ export function WizardPage() {
   const [prefs, setPrefs] = useState<UserPreferences>({ timing: saved.timing, travel: saved.travel, transportMode: saved.transportMode })
   const [confirmedPlan, setConfirmedPlan] = useState<Plan | null>(null)
   const [closed, setClosed] = useState(false)
+
+  useCompactChrome(!confirmedPlan)
 
   const cinemas = useMemo(
     () => ALL_CINEMAS.filter((c) => cinemaSlugs.includes(c.slug)),
