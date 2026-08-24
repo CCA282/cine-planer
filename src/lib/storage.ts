@@ -25,7 +25,7 @@ interface CacheEntry<T> {
   expiresAt: number
 }
 
-const CACHE_PREFIX = 'cine-planer:cache:'
+const CACHE_PREFIX = 'cine-planner:cache:'
 
 /** Read a cached value if present and not expired. */
 export function readCache<T>(key: string): T | null {

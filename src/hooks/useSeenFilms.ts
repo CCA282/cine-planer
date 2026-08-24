@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import type { SeenFilm } from '../lib/types'
 import { useLocalStorageState } from './useLocalStorageState'
 
-const KEY = 'cine-planer:seen-films'
+const KEY = 'cine-planner:seen-films'
 
 export function useSeenFilms() {
   const [seenFilms, setSeenFilms] = useLocalStorageState<SeenFilm[]>(KEY, [])

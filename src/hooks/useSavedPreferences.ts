@@ -8,7 +8,7 @@ export interface SavedPreferences {
   transportMode: TransportMode | null
 }
 
-const KEY = 'cine-planer:saved-preferences'
+const KEY = 'cine-planner:saved-preferences'
 
 const DEFAULTS: SavedPreferences = {
   cinemaSlugs: [],

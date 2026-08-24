@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import type { ClosedPlanning, Plan } from '../lib/types'
 import { useLocalStorageState } from './useLocalStorageState'
 
-const KEY = 'cine-planer:closed-plannings'
+const KEY = 'cine-planner:closed-plannings'
 
 export function usePlanHistory() {
   const [history, setHistory] = useLocalStorageState<ClosedPlanning[]>(KEY, [])
