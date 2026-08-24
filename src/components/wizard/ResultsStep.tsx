@@ -18,6 +18,7 @@ export function ResultsStep({
   prefs,
   onBack,
   onConfirm,
+  onAbort,
 }: {
   date: string
   startTimeMin: number
@@ -27,6 +28,7 @@ export function ResultsStep({
   prefs: UserPreferences
   onBack: () => void
   onConfirm: (plan: Plan) => void
+  onAbort: () => void
 }) {
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null)
 
@@ -44,7 +46,7 @@ export function ResultsStep({
 
   return (
     <div>
-      <StepHeader step={4} total={4} title="Tes plannings possibles" subtitle="Choisis la combinaison qui te convient." />
+      <StepHeader step={4} total={4} title="Tes plannings possibles" subtitle="Choisis la combinaison qui te convient." onAbort={onAbort} />
 
       {errors.map((e, i) => (
         <ApiErrorBanner

@@ -20,6 +20,7 @@ export function CinemaStep({
   selected,
   onChangeSelected,
   onNext,
+  onAbort,
 }: {
   date: string
   onDateChange: (date: string) => void
@@ -28,6 +29,7 @@ export function CinemaStep({
   selected: string[]
   onChangeSelected: (slugs: string[]) => void
   onNext: () => void
+  onAbort: () => void
 }) {
   const [geoStatus, setGeoStatus] = useState<GeoStatus>('idle')
   const [geoError, setGeoError] = useState<string | null>(null)
@@ -64,7 +66,7 @@ export function CinemaStep({
   return (
     <div>
       <div className="sticky top-0 z-10 -mx-4 -mt-4 bg-neutral-950 px-4 pb-2.5 pt-4">
-        <StepHeader step={1} total={4} title="Où et quand ?" subtitle="Choisis la date et un ou plusieurs cinémas Pathé." />
+        <StepHeader step={1} total={4} title="Où et quand ?" subtitle="Choisis la date et un ou plusieurs cinémas Pathé." onAbort={onAbort} />
 
         <input
           type="text"

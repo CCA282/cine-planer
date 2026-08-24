@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { useChromeCompact } from '../lib/chromeContext'
 
 const TABS = [
-  { to: '/', label: 'Planifier', icon: '🎬' },
+  { to: '/', label: 'Accueil', icon: '🏠' },
   { to: '/films', label: 'Films', icon: '🎞️' },
   { to: '/plannings', label: 'Plannings', icon: '🗓️' },
 ]

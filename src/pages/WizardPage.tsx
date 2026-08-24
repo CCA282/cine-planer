@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '../components/Button'
 import { PlanSummary, PlanTimeline } from '../components/PlanTimeline'
 import { CinemaStep } from '../components/wizard/CinemaStep'
@@ -21,6 +22,7 @@ type Step = 1 | 2 | 3 | 4 | 5
 const ALL_CINEMAS = listCinemas()
 
 export function WizardPage() {
+  const navigate = useNavigate()
   const [saved, setSaved] = useSavedPreferences()
   const { isSeen, markManySeen } = useSeenFilms()
   const { closePlan } = usePlanHistory()
@@ -35,7 +37,11 @@ export function WizardPage() {
   const [confirmedPlan, setConfirmedPlan] = useState<Plan | null>(null)
   const [closed, setClosed] = useState(false)
 
-  useCompactChrome(!confirmedPlan && step !== 1)
+  useCompactChrome(true)
+
+  function abort() {
+    navigate('/')
+  }
 
   const cinemas = useMemo(
     () => ALL_CINEMAS.filter((c) => cinemaSlugs.includes(c.slug)),
@@ -84,7 +90,12 @@ export function WizardPage() {
   if (confirmedPlan) {
     return (
       <div>
-        <h2 className="mb-1 text-xl font-bold">{closed ? 'Planning clôturé 🎉' : 'Ton planning'}</h2>
+        <div className="mb-1 flex items-center justify-between gap-2">
+          <h2 className="text-xl font-bold">{closed ? 'Planning clôturé 🎉' : 'Ton planning'}</h2>
+          <button onClick={abort} aria-label="Fermer" className="shrink-0 rounded-full p-1 text-lg leading-none text-neutral-500 hover:text-neutral-300">
+            ✕
+          </button>
+        </div>
         <p className="mb-4 text-sm text-neutral-400">{confirmedPlan.date}</p>
         <div className="mb-4">
           <PlanSummary plan={confirmedPlan} />
@@ -127,6 +138,7 @@ export function WizardPage() {
         selected={cinemaSlugs}
         onChangeSelected={setCinemaSlugs}
         onNext={() => setStep(2)}
+        onAbort={abort}
       />
     )
   }
@@ -142,6 +154,7 @@ export function WizardPage() {
         isSeen={isSeen}
         onBack={() => setStep(1)}
         onNext={() => setStep(3)}
+        onAbort={abort}
       />
     )
   }
@@ -154,6 +167,7 @@ export function WizardPage() {
         multiCinema={cinemas.length > 1}
         onBack={() => setStep(2)}
         onNext={() => setStep(4)}
+        onAbort={abort}
       />
     )
   }
@@ -168,6 +182,7 @@ export function WizardPage() {
       prefs={prefs}
       onBack={() => setStep(3)}
       onConfirm={handleConfirm}
+      onAbort={abort}
     />
   )
 }

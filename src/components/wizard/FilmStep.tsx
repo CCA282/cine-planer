@@ -16,6 +16,7 @@ export function FilmStep({
   isSeen,
   onBack,
   onNext,
+  onAbort,
 }: {
   loading: boolean
   error: string | null
@@ -25,6 +26,7 @@ export function FilmStep({
   isSeen: (slug: string) => boolean
   onBack: () => void
   onNext: () => void
+  onAbort: () => void
 }) {
   const [showSeen, setShowSeen] = useState(false)
   const [query, setQuery] = useState('')
@@ -44,7 +46,7 @@ export function FilmStep({
   return (
     <div>
       <div className="sticky top-0 z-10 -mx-4 -mt-4 bg-neutral-950 px-4 pb-2.5 pt-4">
-        <StepHeader step={2} total={4} title="Quels films ?" subtitle="Sélectionne les films que tu veux voir ce jour-là." />
+        <StepHeader step={2} total={4} title="Quels films ?" subtitle="Sélectionne les films que tu veux voir ce jour-là." onAbort={onAbort} />
 
         <input
           type="text"

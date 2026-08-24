@@ -27,6 +27,7 @@ export function PreferencesStep({
   multiCinema,
   onBack,
   onNext,
+  onAbort,
   nextDisabled,
   nextLabel = 'Générer les plannings',
 }: {
@@ -35,6 +36,7 @@ export function PreferencesStep({
   multiCinema: boolean
   onBack: () => void
   onNext: () => void
+  onAbort: () => void
   nextDisabled?: boolean
   nextLabel?: string
 }) {
@@ -42,7 +44,7 @@ export function PreferencesStep({
 
   return (
     <div>
-      <StepHeader step={3} total={4} title="Tes préférences" subtitle="Ça, on s'en souvient pour la prochaine fois." />
+      <StepHeader step={3} total={4} title="Tes préférences" subtitle="Ça, on s'en souvient pour la prochaine fois." onAbort={onAbort} />
 
       <div className="mb-5">
         <p className="mb-2 text-sm font-semibold">Rythme des séances</p>
