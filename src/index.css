@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  @apply bg-neutral-950 text-neutral-100 antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-700 rounded-full;
+}

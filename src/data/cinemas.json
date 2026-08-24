@@ -1,0 +1,614 @@
+[
+  {
+    "slug": "cinema-pathe-alesia",
+    "name": "Pathé Alésia",
+    "city": "Paris",
+    "address": "73 avenue du Général Leclerc",
+    "zip": "75014",
+    "lat": 48.8285214,
+    "lng": 2.3275216
+  },
+  {
+    "slug": "cinema-pathe-amiens",
+    "name": "Pathé Amiens",
+    "city": "Amiens",
+    "address": "3 boulevard de Belfort",
+    "zip": "80000",
+    "lat": 49.8897523,
+    "lng": 2.305451
+  },
+  {
+    "slug": "cinema-pathe-angers",
+    "name": "Pathé Angers",
+    "city": "Angers",
+    "address": "1 avenue des Droits de l'Homme",
+    "zip": "49100",
+    "lat": 47.479464,
+    "lng": -0.550977
+  },
+  {
+    "slug": "cinema-pathe-annecy",
+    "name": "Pathé Annecy",
+    "city": "Annecy",
+    "address": "7 avenue de Brogny",
+    "zip": "74000",
+    "lat": 45.902877,
+    "lng": 6.12333
+  },
+  {
+    "slug": "cinema-pathe-aquaboulevard",
+    "name": "Pathé Aquaboulevard",
+    "city": "Paris",
+    "address": "8 rue du Colonel Pierre Avia",
+    "zip": "75015",
+    "lat": 48.8326727,
+    "lng": 2.278891
+  },
+  {
+    "slug": "cinema-pathe-archamps",
+    "name": "Pathé Archamps",
+    "city": "Archamps",
+    "address": "Site d'Archamps",
+    "zip": "74160",
+    "lat": 46.1355081,
+    "lng": 6.1332749
+  },
+  {
+    "slug": "cinema-pathe-atlantis",
+    "name": "Pathé Atlantis",
+    "city": "Nantes-Saint-Herblain",
+    "address": "allée la Pérouse",
+    "zip": "44818",
+    "lat": 47.2225654,
+    "lng": -1.6261333
+  },
+  {
+    "slug": "cinema-pathe-aubiere",
+    "name": "Pathé Aubière",
+    "city": "Aubière",
+    "address": "avenue Lavoisier",
+    "zip": "63170",
+    "lat": 45.756906,
+    "lng": 3.14419
+  },
+  {
+    "slug": "cinema-pathe-aeroville",
+    "name": "Pathé Aéroville",
+    "city": "Roissy-en-France",
+    "address": "30 rue des Buissons",
+    "zip": "95700",
+    "lat": 48.99020618,
+    "lng": 2.52337933
+  },
+  {
+    "slug": "cinema-pathe-bnp-paribas",
+    "name": "Pathé BNP Paribas",
+    "city": "Paris",
+    "address": "32 rue Louis Legrand",
+    "zip": "75002",
+    "lat": 48.8705864,
+    "lng": 2.3341997
+  },
+  {
+    "slug": "cinema-pathe-beaugrenelle",
+    "name": "Pathé Beaugrenelle",
+    "city": "Paris",
+    "address": "7 rue Linois - Centre Commercial Beaugrenelle",
+    "zip": "75015",
+    "lat": 48.8487896,
+    "lng": 2.2824743
+  },
+  {
+    "slug": "cinema-pathe-belle-epine",
+    "name": "Pathé Belle Épine",
+    "city": "Thiais",
+    "address": "Centre Commercial Belle Épine",
+    "zip": "94521",
+    "lat": 48.75522681,
+    "lng": 2.37429142
+  },
+  {
+    "slug": "cinema-pathe-bellecour",
+    "name": "Pathé Bellecour",
+    "city": "Lyon",
+    "address": "79 rue de la République",
+    "zip": "69002",
+    "lat": 45.7585829,
+    "lng": 4.8346061
+  },
+  {
+    "slug": "cinema-pathe-boulogne",
+    "name": "Pathé Boulogne",
+    "city": "Boulogne-Billancourt",
+    "address": "26 rue le Corbusier",
+    "zip": "92100",
+    "lat": 48.8373824,
+    "lng": 2.2379938
+  },
+  {
+    "slug": "cinema-pathe-brumath",
+    "name": "Pathé Brumath",
+    "city": "Brumath",
+    "address": "ZI Frères Lumière",
+    "zip": "67170",
+    "lat": 48.7440724,
+    "lng": 7.6926439
+  },
+  {
+    "slug": "cinema-pathe-cap-sud",
+    "name": "Pathé Cap Sud",
+    "city": "Avignon",
+    "address": "175 rue Pierre Seghers",
+    "zip": "84085",
+    "lat": 43.9279456,
+    "lng": 4.8385442
+  },
+  {
+    "slug": "cinema-pathe-capucins",
+    "name": "Pathé Capucins",
+    "city": "Brest",
+    "address": "25 Rue de Pontaniou",
+    "zip": "29200",
+    "lat": 48.3895311,
+    "lng": -4.4992165
+  },
+  {
+    "slug": "cinema-pathe-carre-senart",
+    "name": "Pathé Carré Sénart",
+    "city": "Lieusaint",
+    "address": "3 allée du Préambule",
+    "zip": "77566",
+    "lat": 48.6134886,
+    "lng": 2.549847
+  },
+  {
+    "slug": "cinema-pathe-carre-de-soie",
+    "name": "Pathé Carré de Soie",
+    "city": "Vaulx-en-Velin",
+    "address": "2 rue Jacquard",
+    "zip": "69120",
+    "lat": 45.7647117,
+    "lng": 4.9193412
+  },
+  {
+    "slug": "cinema-pathe-chambery",
+    "name": "Pathé Chambéry",
+    "city": "Chambéry",
+    "address": "4 rue Derrière Les Murs",
+    "zip": "73000",
+    "lat": 45.566186,
+    "lng": 5.9180665
+  },
+  {
+    "slug": "cinema-pathe-cite-europe",
+    "name": "Pathé Cité Europe",
+    "city": "Coquelles",
+    "address": "boulevard du Kent",
+    "zip": "62231",
+    "lat": 50.9331081,
+    "lng": 1.8111025
+  },
+  {
+    "slug": "cinema-pathe-comedie",
+    "name": "Pathé Comédie",
+    "city": "Montpellier",
+    "address": "10 place de la Comédie",
+    "zip": "34000",
+    "lat": 43.6084326,
+    "lng": 3.8799834
+  },
+  {
+    "slug": "cinema-pathe-conflans",
+    "name": "Pathé Conflans",
+    "city": "Conflans-Sainte-Honorine",
+    "address": "ZA les Boutries",
+    "zip": "78700",
+    "lat": 49.0036419,
+    "lng": 2.0769177
+  },
+  {
+    "slug": "cinema-pathe-convention",
+    "name": "Pathé Convention",
+    "city": "Paris",
+    "address": "27 rue Alain-Chartier",
+    "zip": "75015",
+    "lat": 48.8377521,
+    "lng": 2.2962596
+  },
+  {
+    "slug": "cinema-pathe-dammarie",
+    "name": "Pathé Dammarie",
+    "city": "Dammarie-les-Lys",
+    "address": "824 avenue du Lys",
+    "zip": "77190",
+    "lat": 48.5174876,
+    "lng": 2.625611
+  },
+  {
+    "slug": "cinema-pathe-dijon",
+    "name": "Pathé Dijon",
+    "city": "Dijon",
+    "address": "12 parvis de l'UNESCO",
+    "zip": "21000",
+    "lat": 47.318031460746404,
+    "lng": 5.02993536961326
+  },
+  {
+    "slug": "cinema-pathe-docks-76",
+    "name": "Pathé Docks 76",
+    "city": "Rouen",
+    "address": "boulevard Ferdinand de Lesseps",
+    "zip": "76000",
+    "lat": 49.4446958,
+    "lng": 1.068793
+  },
+  {
+    "slug": "cinema-pathe-docks-vauban",
+    "name": "Pathé Docks Vauban",
+    "city": "Le Havre",
+    "address": "quai des Antilles",
+    "zip": "76600",
+    "lat": 49.4896494,
+    "lng": 0.1311404
+  },
+  {
+    "slug": "cinema-pathe-gare-du-sud",
+    "name": "Pathé Gare du Sud",
+    "city": "Nice",
+    "address": "9 allée Charles Pasqua",
+    "zip": "06000",
+    "lat": 43.7092302,
+    "lng": 7.2583328
+  },
+  {
+    "slug": "cinema-pathe-grand-quevilly",
+    "name": "Pathé Grand-Quevilly",
+    "city": "Grand-Quevilly",
+    "address": "26 boulevard Pierre Brossolette",
+    "zip": "76120",
+    "lat": 49.4176374,
+    "lng": 1.0343713
+  },
+  {
+    "slug": "cinema-pathe-grenoble",
+    "name": "Pathé Grenoble",
+    "city": "Grenoble",
+    "address": "21 boulevard Maréchal Lyautey",
+    "zip": "38000",
+    "lat": 45.1855134,
+    "lng": 5.7311446
+  },
+  {
+    "slug": "cinema-pathe-la-joliette",
+    "name": "Pathé La Joliette",
+    "city": "Marseille",
+    "address": "54 rue de Chanterac",
+    "zip": "13002",
+    "lat": 43.312053,
+    "lng": 5.3675641
+  },
+  {
+    "slug": "cinema-pathe-la-valette",
+    "name": "Pathé La Valette",
+    "city": "La Valette-du-Var",
+    "address": "300 avenue de l'Université",
+    "zip": "83160",
+    "lat": 43.1372267,
+    "lng": 6.0067459
+  },
+  {
+    "slug": "cinema-pathe-la-villette",
+    "name": "Pathé La Villette",
+    "city": "Paris",
+    "address": "30 avenue Corentin Cariou",
+    "zip": "75019",
+    "lat": 48.895985,
+    "lng": 2.387059
+  },
+  {
+    "slug": "cinema-pathe-labege",
+    "name": "Pathé Labège",
+    "city": "Labège",
+    "address": "105 avenue de la Méridienne",
+    "zip": "31670",
+    "lat": 43.5438441,
+    "lng": 1.5076939
+  },
+  {
+    "slug": "cinema-pathe-le-mans",
+    "name": "Pathé Le Mans",
+    "city": "Le Mans",
+    "address": "3 place des Jacobins",
+    "zip": "72000",
+    "lat": 48.008058,
+    "lng": 0.200436
+  },
+  {
+    "slug": "cinema-pathe-les-fauvettes",
+    "name": "Pathé Les Fauvettes",
+    "city": "Paris",
+    "address": "58 avenue des Gobelins",
+    "zip": "75013",
+    "lat": 48.8335465,
+    "lng": 2.3538606
+  },
+  {
+    "slug": "cinema-pathe-les-rives-de-l-orne",
+    "name": "Pathé Les Rives de l'Orne",
+    "city": "Caen",
+    "address": "14 esplanade Léopold Sédar Senghor",
+    "zip": "14000",
+    "lat": 49.176782,
+    "lng": -0.352018
+  },
+  {
+    "slug": "cinema-pathe-levallois",
+    "name": "Pathé Levallois",
+    "city": "Levallois",
+    "address": "28 rue  d'Alsace",
+    "zip": "92300",
+    "lat": 48.8916,
+    "lng": 2.295984
+  },
+  {
+    "slug": "cinema-pathe-lingostiere",
+    "name": "Pathé Lingostière",
+    "city": "Nice",
+    "address": "604 boulevard du Mercantour",
+    "zip": "06300",
+    "lat": 43.7267178,
+    "lng": 7.1895975
+  },
+  {
+    "slug": "cinema-pathe-lievin",
+    "name": "Pathé Liévin",
+    "city": "Liévin",
+    "address": "rue François Courtin",
+    "zip": "62800",
+    "lat": 50.4230345,
+    "lng": 2.7776034
+  },
+  {
+    "slug": "cinema-pathe-madeleine",
+    "name": "Pathé Madeleine",
+    "city": "Marseille",
+    "address": "36 avenue du Maréchal Foch",
+    "zip": "13004",
+    "lat": 43.300682,
+    "lng": 5.3995385
+  },
+  {
+    "slug": "cinema-pathe-massy",
+    "name": "Pathé Massy",
+    "city": "Massy",
+    "address": "21 place du Grand Ouest",
+    "zip": "91300",
+    "lat": 48.724364,
+    "lng": 2.261185
+  },
+  {
+    "slug": "cinema-pathe-massena",
+    "name": "Pathé Masséna",
+    "city": "Nice",
+    "address": "31 avenue Jean Médecin",
+    "zip": "06000",
+    "lat": 43.7020108,
+    "lng": 7.266943
+  },
+  {
+    "slug": "cinema-pathe-montataire",
+    "name": "Pathé Montataire",
+    "city": "Montataire",
+    "address": "91 rue Louis Blanc",
+    "zip": "60160",
+    "lat": 49.2595858,
+    "lng": 2.4536376
+  },
+  {
+    "slug": "cinema-pathe-montparnos",
+    "name": "Pathé Montparnos",
+    "city": "Paris",
+    "address": "16 rue d'Odessa",
+    "zip": "75014",
+    "lat": 48.84223174402979,
+    "lng": 2.324553459425778
+  },
+  {
+    "slug": "cinema-pathe-macon",
+    "name": "Pathé Mâcon",
+    "city": "Mâcon",
+    "address": "70 rue Michel Debré",
+    "zip": "71000",
+    "lat": 46.31681,
+    "lng": 4.838309
+  },
+  {
+    "slug": "cinema-pathe-nantes",
+    "name": "Pathé Nantes",
+    "city": "Nantes",
+    "address": "12 place du Commerce",
+    "zip": "44000",
+    "lat": 47.2129327,
+    "lng": -1.5581101
+  },
+  {
+    "slug": "cinema-pathe-odysseum",
+    "name": "Pathé Odysseum",
+    "city": "Montpellier",
+    "address": "235 rue Georges Méliès",
+    "zip": "34000",
+    "lat": 43.6038516,
+    "lng": 3.9157164
+  },
+  {
+    "slug": "cinema-pathe-orleans",
+    "name": "Pathé Orléans",
+    "city": "Orléans",
+    "address": "2 rue des Halles",
+    "zip": "45000",
+    "lat": 47.8985341,
+    "lng": 1.9079856
+  },
+  {
+    "slug": "cinema-pathe-palace",
+    "name": "Pathé Palace",
+    "city": "Paris",
+    "address": "2 boulevard des Capucines",
+    "zip": "75009",
+    "lat": 48.8710108,
+    "lng": 2.3339748
+  },
+  {
+    "slug": "cinema-pathe-parnasse",
+    "name": "Pathé Parnasse",
+    "city": "Paris",
+    "address": "3 rue dOdessa",
+    "zip": "75014",
+    "lat": 48.8430185,
+    "lng": 2.3243755
+  },
+  {
+    "slug": "cinema-pathe-plan-de-campagne",
+    "name": "Pathé Plan de Campagne",
+    "city": "Marseille",
+    "address": "Chemin des Pennes aux Pins",
+    "zip": "13170",
+    "lat": 43.4083231,
+    "lng": 5.3207069
+  },
+  {
+    "slug": "cinema-pathe-quai-d-ivry",
+    "name": "Pathé Quai d'Ivry",
+    "city": "Ivry-sur-Seine",
+    "address": "5 Rue François Mitterrand",
+    "zip": "94200",
+    "lat": 48.824207,
+    "lng": 2.3873879
+  },
+  {
+    "slug": "cinema-pathe-rennes",
+    "name": "Pathé Rennes",
+    "city": "Rennes",
+    "address": "12 rue Yvonne Jean Haffen",
+    "zip": "35000",
+    "lat": 48.104597,
+    "lng": -1.6753091
+  },
+  {
+    "slug": "cinema-pathe-saint-denis",
+    "name": "Pathé Saint-Denis",
+    "city": "Saint-Denis",
+    "address": "8 rue du Mondial 98",
+    "zip": "93210",
+    "lat": 48.9253419,
+    "lng": 2.363209
+  },
+  {
+    "slug": "cinema-pathe-saran",
+    "name": "Pathé Saran",
+    "city": "Saran",
+    "address": "1010 Rue Nationale",
+    "zip": "45000",
+    "lat": 47.945883,
+    "lng": 1.8923443
+  },
+  {
+    "slug": "cinema-pathe-thillois",
+    "name": "Pathé Thillois",
+    "city": "Thillois",
+    "address": "parc Millésime",
+    "zip": "51370",
+    "lat": 49.2542575,
+    "lng": 3.9657981
+  },
+  {
+    "slug": "cinema-pathe-toulon",
+    "name": "Pathé Toulon",
+    "city": "Toulon",
+    "address": "265 Boulevard du Général Leclerc",
+    "zip": "83000",
+    "lat": 43.1258555,
+    "lng": 5.9276849
+  },
+  {
+    "slug": "cinema-pathe-tours",
+    "name": "Pathé Tours",
+    "city": "Tours",
+    "address": "141 Rue du Colombier",
+    "zip": "37100",
+    "lat": 47.423199,
+    "lng": 0.709426
+  },
+  {
+    "slug": "cinema-pathe-vaise",
+    "name": "Pathé Vaise",
+    "city": "Lyon",
+    "address": "rue des Docks",
+    "zip": "69009",
+    "lat": 45.7865498,
+    "lng": 4.8114652
+  },
+  {
+    "slug": "cinema-pathe-valence",
+    "name": "Pathé Valence",
+    "city": "Valence",
+    "address": "avenue de Romans",
+    "zip": "26000",
+    "lat": 44.9332215,
+    "lng": 4.9010515
+  },
+  {
+    "slug": "cinema-pathe-valenciennes",
+    "name": "Pathé Valenciennes",
+    "city": "Valenciennes",
+    "address": "59 avenue des Alpes",
+    "zip": "59300",
+    "lat": 50.3405823,
+    "lng": 3.5174305
+  },
+  {
+    "slug": "cinema-pathe-wepler",
+    "name": "Pathé Wepler",
+    "city": "Paris",
+    "address": "boulevard de Clichy",
+    "zip": "75018",
+    "lat": 48.8835864,
+    "lng": 2.3274473
+  },
+  {
+    "slug": "cinema-pathe-wilson",
+    "name": "Pathé Wilson",
+    "city": "Toulouse",
+    "address": "place Wilson",
+    "zip": "31000",
+    "lat": 43.6051297,
+    "lng": 1.4471246
+  },
+  {
+    "slug": "cinema-pathe-echirolles",
+    "name": "Pathé Échirolles",
+    "city": "Échirolles",
+    "address": "4 rue Albert Londres",
+    "zip": "38130",
+    "lat": 45.1476094,
+    "lng": 5.7198634
+  },
+  {
+    "slug": "cinema-pathe-evreux",
+    "name": "Pathé Évreux",
+    "city": "Evreux",
+    "address": "3 rue du 7éme Chasseur",
+    "zip": "27000",
+    "lat": 49.0278669,
+    "lng": 1.1452116
+  },
+  {
+    "slug": "cinema-pathe-ile-seguin",
+    "name": "Pathé Île Seguin",
+    "city": "Boulogne-Billancourt",
+    "address": "2 île Seguin",
+    "zip": "92100",
+    "lat": 48.822802,
+    "lng": 2.236605
+  }
+]
