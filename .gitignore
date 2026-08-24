@@ -31,6 +31,7 @@ dist-ssr
 # Cloudflare Worker
 worker/node_modules
 worker/dist
+worker/tsconfig.tsbuildinfo
 .wrangler
 
 # Claude Code local settings
