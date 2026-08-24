@@ -35,7 +35,7 @@ export function WizardPage() {
   const [confirmedPlan, setConfirmedPlan] = useState<Plan | null>(null)
   const [closed, setClosed] = useState(false)
 
-  useCompactChrome(!confirmedPlan)
+  useCompactChrome(!confirmedPlan && step !== 1)
 
   const cinemas = useMemo(
     () => ALL_CINEMAS.filter((c) => cinemaSlugs.includes(c.slug)),
