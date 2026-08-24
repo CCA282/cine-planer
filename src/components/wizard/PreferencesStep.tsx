@@ -1,5 +1,6 @@
 import { Button } from '../Button'
 import type { TimingPreference, TransportMode, TravelPreference, UserPreferences } from '../../lib/types'
+import { StepActionBar } from './StepActionBar'
 import { StepHeader } from './StepHeader'
 
 const TIMING_OPTIONS: { value: TimingPreference; label: string; hint: string }[] = [
@@ -98,14 +99,14 @@ export function PreferencesStep({
         </div>
       )}
 
-      <div className="flex gap-2">
+      <StepActionBar>
         <Button variant="secondary" onClick={onBack} className="flex-1">
           Retour
         </Button>
         <Button onClick={onNext} disabled={nextDisabled || (needsTransportMode && !prefs.transportMode)} className="flex-1">
           {nextLabel}
         </Button>
-      </div>
+      </StepActionBar>
     </div>
   )
 }

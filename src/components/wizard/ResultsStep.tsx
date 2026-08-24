@@ -5,10 +5,12 @@ import type { AvailableFilm } from '../../hooks/useCinemaProgram'
 import { generatePlans } from '../../lib/scheduler'
 import { getSessionsForFilm } from '../../lib/showtimeSynth'
 import type { Cinema, Plan, Session, UserPreferences } from '../../lib/types'
+import { StepActionBar } from './StepActionBar'
 import { StepHeader } from './StepHeader'
 
 export function ResultsStep({
   date,
+  startTimeMin,
   cinemas,
   available,
   filmSlugs,
@@ -17,6 +19,7 @@ export function ResultsStep({
   onConfirm,
 }: {
   date: string
+  startTimeMin: number
   cinemas: Cinema[]
   available: AvailableFilm[]
   filmSlugs: string[]
@@ -35,11 +38,11 @@ export function ResultsStep({
       const entry = available.find((a) => a.film.slug === slug)
       if (!entry) continue
       for (const cinemaSlug of entry.cinemaSlugs) {
-        sessions.push(...getSessionsForFilm(cinemaSlug, entry.film, date))
+        sessions.push(...getSessionsForFilm(cinemaSlug, entry.film, date).filter((s) => s.start >= startTimeMin))
       }
     }
     return generatePlans(sessions, cinemaMap, filmMap, filmSlugs, prefs, date)
-  }, [available, filmSlugs, prefs, date, cinemaMap, filmMap])
+  }, [available, filmSlugs, prefs, date, startTimeMin, cinemaMap, filmMap])
 
   const selectedPlan = plans.find((p) => p.id === selectedPlanId) ?? null
 
@@ -72,14 +75,14 @@ export function ResultsStep({
         })}
       </div>
 
-      <div className="flex gap-2">
+      <StepActionBar>
         <Button variant="secondary" onClick={onBack} className="flex-1">
           Retour
         </Button>
         <Button onClick={() => selectedPlan && onConfirm(selectedPlan)} disabled={!selectedPlan} className="flex-1">
           Valider ce planning
         </Button>
-      </div>
+      </StepActionBar>
     </div>
   )
 }

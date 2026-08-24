@@ -2,6 +2,29 @@ export function todayISO(): string {
   return toISO(new Date())
 }
 
+/** Minutes since midnight right now, rounded up to the next 5 minutes. */
+export function nowMinutes(): number {
+  const d = new Date()
+  const raw = d.getHours() * 60 + d.getMinutes()
+  return Math.min(24 * 60 - 5, Math.ceil(raw / 5) * 5)
+}
+
+/** Default "start from" time for a given day: now (rounded) if it's today, otherwise no restriction. */
+export function defaultStartTimeForDate(iso: string): number {
+  return iso === todayISO() ? nowMinutes() : 0
+}
+
+export function minutesToTimeInputValue(min: number): string {
+  const h = Math.floor(min / 60) % 24
+  const m = min % 60
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
+}
+
+export function timeInputValueToMinutes(value: string): number {
+  const [h, m] = value.split(':').map(Number)
+  return h * 60 + m
+}
+
 export function toISO(d: Date): string {
   const y = d.getFullYear()
   const m = String(d.getMonth() + 1).padStart(2, '0')

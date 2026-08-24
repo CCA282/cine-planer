@@ -4,6 +4,7 @@ import { Button } from '../Button'
 import { PosterImage } from '../PosterImage'
 import { isLiveModeConfigured } from '../../lib/patheClient'
 import type { AvailableFilm } from '../../hooks/useCinemaProgram'
+import { StepActionBar } from './StepActionBar'
 import { StepHeader } from './StepHeader'
 
 export function FilmStep({
@@ -26,8 +27,15 @@ export function FilmStep({
   onNext: () => void
 }) {
   const [showSeen, setShowSeen] = useState(false)
+  const [query, setQuery] = useState('')
 
-  const visible = useMemo(() => available.filter((a) => showSeen || !isSeen(a.film.slug)), [available, showSeen, isSeen])
+  const visible = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    // A search always searches everything, seen or not — the checkbox only controls what shows
+    // up when browsing without a query. Either way, seen films sort to the end.
+    const filtered = available.filter((a) => (Boolean(q) || showSeen || !isSeen(a.film.slug)) && (!q || a.film.title.toLowerCase().includes(q)))
+    return [...filtered].sort((a, b) => Number(isSeen(a.film.slug)) - Number(isSeen(b.film.slug)))
+  }, [available, showSeen, isSeen, query])
 
   function toggle(slug: string) {
     onChangeSelected(selected.includes(slug) ? selected.filter((s) => s !== slug) : [...selected, slug])
@@ -35,18 +43,28 @@ export function FilmStep({
 
   return (
     <div>
-      <StepHeader step={2} total={4} title="Quels films ?" subtitle="Sélectionne les films que tu veux voir ce jour-là." />
+      <div className="sticky top-0 z-10 -mx-4 -mt-4 bg-neutral-950 px-4 pb-3 pt-4">
+        <StepHeader step={2} total={4} title="Quels films ?" subtitle="Sélectionne les films que tu veux voir ce jour-là." />
 
-      {!isLiveModeConfigured && (
-        <p className="mb-3 rounded-lg bg-sky-500/10 px-3 py-2 text-xs text-sky-300">
-          Mode démo : catalogue Pathé réel, mais programme et horaires par cinéma simulés (aucun relais API configuré — voir README).
-        </p>
-      )}
+        {!isLiveModeConfigured && (
+          <p className="mb-3 rounded-lg bg-sky-500/10 px-3 py-2 text-xs text-sky-300">
+            Mode démo : catalogue Pathé réel, mais programme et horaires par cinéma simulés (aucun relais API configuré — voir README).
+          </p>
+        )}
 
-      <label className="mb-3 flex items-center gap-2 text-sm text-neutral-400">
-        <input type="checkbox" checked={showSeen} onChange={(e) => setShowSeen(e.target.checked)} className="accent-amber-500" />
-        Afficher aussi les films déjà vus
-      </label>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Rechercher un film…"
+          className="mb-3 w-full rounded-xl border border-neutral-800 bg-neutral-900 px-3 py-2.5 text-sm placeholder:text-neutral-500 focus:border-amber-500 focus:outline-none"
+        />
+
+        <label className="flex items-center gap-2 text-sm text-neutral-400">
+          <input type="checkbox" checked={showSeen} onChange={(e) => setShowSeen(e.target.checked)} className="accent-amber-500" />
+          Afficher aussi les films déjà vus
+        </label>
+      </div>
 
       {loading && <p className="py-8 text-center text-sm text-neutral-500">Chargement du programme…</p>}
       {error && <p className="py-4 text-sm text-red-400">{error}</p>}
@@ -55,7 +73,7 @@ export function FilmStep({
         <p className="py-8 text-center text-sm text-neutral-500">Aucun film disponible dans les cinémas choisis pour cette date.</p>
       )}
 
-      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="mb-6 mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
         {visible.map(({ film, cinemaSlugs }) => {
           const isSelected = selected.includes(film.slug)
           return (
@@ -92,14 +110,14 @@ export function FilmStep({
         })}
       </div>
 
-      <div className="flex gap-2">
+      <StepActionBar>
         <Button variant="secondary" onClick={onBack} className="flex-1">
           Retour
         </Button>
         <Button onClick={onNext} disabled={selected.length === 0} className="flex-1">
           Continuer ({selected.length})
         </Button>
-      </div>
+      </StepActionBar>
     </div>
   )
 }

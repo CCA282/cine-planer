@@ -5,11 +5,12 @@ import { CinemaStep } from '../components/wizard/CinemaStep'
 import { FilmStep } from '../components/wizard/FilmStep'
 import { PreferencesStep } from '../components/wizard/PreferencesStep'
 import { ResultsStep } from '../components/wizard/ResultsStep'
+import { StepActionBar } from '../components/wizard/StepActionBar'
 import { useCinemaProgram } from '../hooks/useCinemaProgram'
 import { usePlanHistory } from '../hooks/usePlanHistory'
 import { useSavedPreferences } from '../hooks/useSavedPreferences'
 import { useSeenFilms } from '../hooks/useSeenFilms'
-import { todayISO } from '../lib/date'
+import { defaultStartTimeForDate, todayISO } from '../lib/date'
 import { listCinemas } from '../lib/patheClient'
 import type { Plan, UserPreferences } from '../lib/types'
 
@@ -24,6 +25,7 @@ export function WizardPage() {
 
   const [step, setStep] = useState<Step>(1)
   const [date, setDate] = useState(todayISO())
+  const [startTimeMin, setStartTimeMin] = useState(() => defaultStartTimeForDate(todayISO()))
   const [cinemaSlugs, setCinemaSlugs] = useState<string[]>(saved.cinemaSlugs)
   const [filmSlugs, setFilmSlugs] = useState<string[]>([])
   const [prefs, setPrefs] = useState<UserPreferences>({ timing: saved.timing, travel: saved.travel, transportMode: saved.transportMode })
@@ -51,6 +53,11 @@ export function WizardPage() {
     setClosed(false)
   }
 
+  function handleDateChange(newDate: string) {
+    setDate(newDate)
+    setStartTimeMin(defaultStartTimeForDate(newDate))
+  }
+
   function handleClose() {
     if (!confirmedPlan) return
     markManySeen(
@@ -75,22 +82,24 @@ export function WizardPage() {
           <PlanTimeline plan={confirmedPlan} cinemas={cinemaMap} films={new Map(program.catalog.map((f) => [f.slug, f]))} />
         </div>
         {!closed ? (
-          <div className="flex gap-2">
+          <StepActionBar>
             <Button variant="secondary" onClick={restart} className="flex-1">
               Nouveau planning
             </Button>
             <Button onClick={handleClose} className="flex-1">
               Clôturer ce planning
             </Button>
-          </div>
+          </StepActionBar>
         ) : (
           <div>
             <p className="mb-4 rounded-lg bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
               Les films de ce planning sont marqués comme vus et le planning est enregistré dans l'historique.
             </p>
-            <Button onClick={restart} className="w-full">
-              Nouveau planning
-            </Button>
+            <StepActionBar>
+              <Button onClick={restart} className="w-full">
+                Nouveau planning
+              </Button>
+            </StepActionBar>
           </div>
         )}
       </div>
@@ -98,7 +107,17 @@ export function WizardPage() {
   }
 
   if (step === 1) {
-    return <CinemaStep date={date} onDateChange={setDate} selected={cinemaSlugs} onChangeSelected={setCinemaSlugs} onNext={() => setStep(2)} />
+    return (
+      <CinemaStep
+        date={date}
+        onDateChange={handleDateChange}
+        startTimeMin={startTimeMin}
+        onStartTimeChange={setStartTimeMin}
+        selected={cinemaSlugs}
+        onChangeSelected={setCinemaSlugs}
+        onNext={() => setStep(2)}
+      />
+    )
   }
 
   if (step === 2) {
@@ -131,6 +150,7 @@ export function WizardPage() {
   return (
     <ResultsStep
       date={date}
+      startTimeMin={startTimeMin}
       cinemas={cinemas}
       available={program.available}
       filmSlugs={filmSlugs}
