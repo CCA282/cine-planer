@@ -1,92 +1,91 @@
 # CinéPlanner
 
-Planificateur de séances Pathé : choisis tes cinémas à proximité, les films que tu veux voir, tes
-préférences de rythme et de trajet — l'app génère plusieurs plannings de journée qui maximisent le
-nombre de films vus, timing et trajets inclus.
+Pathé showtime planner: pick your nearby cinemas, the films you want to see, your pacing and
+travel preferences — the app generates several day plans that maximize the number of films seen,
+timing and travel included.
 
-100% front-end : aucune base de données, aucun compte. Tout est stocké dans le `localStorage` du
-navigateur (préférences, films vus, historique des plannings).
+100% front-end: no database, no account. Everything is stored in the browser's `localStorage`
+(preferences, seen films, planning history).
 
-## Fonctionnalités
+## Features
 
-- Géolocalisation → liste des cinémas Pathé à proximité (recherche manuelle possible aussi)
-- Sélection multi-cinémas et multi-films, avec affiches et infos réelles
-- Préférences réutilisables : rythme des séances (large / standard / serré), tolérance aux
-  trajets, mode de transport
-- Algorithme de planification (recherche exacte par masque de bits) qui génère plusieurs
-  combinaisons possibles, classées par nombre de films puis par confort
-- Historique des plannings clôturés + suivi des films déjà vus
+- Geolocation → list of nearby Pathé cinemas (manual search also possible)
+- Multi-cinema and multi-film selection, with real posters and info
+- Reusable preferences: session pacing (relaxed / standard / tight), tolerance to travel,
+  transport mode
+- Planning algorithm (exact search via bitmask) that generates several possible combinations,
+  ranked by number of films then by comfort
+- History of closed plannings + tracking of already-seen films
 
-## Démarrer
+## Getting started
 
 ```bash
 npm install
 npm run dev
 ```
 
-Le relai API (voir ci-dessous) **doit être configuré** dans `.env` pour que l'app fonctionne :
-sans lui, aucune donnée n'est inventée — l'app affiche des erreurs API explicites à la place.
+The API relay (see below) **must be configured** in `.env` for the app to work: without it, no
+data is fabricated — the app shows explicit API errors instead.
 
-## Sources de données — et leurs limites
+## Data sources — and their limits
 
-Pathé n'a pas d'API publique officielle. Cette app s'appuie sur les endpoints JSON non-documentés
-utilisés par pathe.fr lui-même :
+Pathé has no official public API. This app relies on the undocumented JSON endpoints used by
+pathe.fr itself:
 
-| Endpoint | Contenu | Utilisé pour |
+| Endpoint | Content | Used for |
 | --- | --- | --- |
-| `/api/cinemas` | Liste des 68 cinémas Pathé (nom, adresse, GPS) | Sélection par proximité (figé dans `src/data/cinemas.json`, un snapshot suffit — la liste des cinémas change rarement) |
-| `/api/shows` | Catalogue des films (titre, affiche, synopsis, durée, genres…) | Fiches films, en direct via le relai |
-| `/api/cinema/{slug}/shows` | Pour chaque film, les jours où il est réellement programmé dans ce cinéma | Disponibilité réelle par cinéma/jour, en direct via le relai |
-| `/api/show/{filmSlug}/showtimes/{cinemaSlug}/{date}` | Séances exactes (heure de début `time`, heure de fin `endTime`, version) | Horaires réels affichés dans les plannings, en direct via le relai |
+| `/api/cinemas` | List of the 68 Pathé cinemas (name, address, GPS) | Proximity selection (frozen in `src/data/cinemas.json`, a snapshot is enough — the cinema list rarely changes) |
+| `/api/shows` | Film catalog (title, poster, synopsis, duration, genres…) | Film sheets, live via the relay |
+| `/api/cinema/{slug}/shows` | For each film, the days it's actually scheduled at that cinema | Real per-cinema/day availability, live via the relay |
+| `/api/show/{filmSlug}/showtimes/{cinemaSlug}/{date}` | Exact sessions (start time `time`, end time `endTime`, version) | Real showtimes displayed in plannings, live via the relay |
 
-Tout — catalogue, programme par cinéma, horaires exacts — vient en direct de Pathé via le relai. Si
-une requête échoue (relai non configuré, indisponible, ou Pathé ne couvre pas une combinaison
-film/cinéma/date), l'app affiche un message d'erreur explicite plutôt que d'inventer une donnée de
-repli.
+Everything — catalog, per-cinema programme, exact showtimes — comes live from Pathé via the relay.
+If a request fails (relay not configured, unreachable, or Pathé doesn't cover a given
+film/cinema/date combination), the app shows an explicit error message instead of fabricating
+fallback data.
 
 ### CORS
 
-Ces endpoints n'envoient pas de header `Access-Control-Allow-Origin` : un navigateur ne peut pas
-les appeler directement depuis un autre domaine. Pour rester "juste un front" sans base de données
-ni logique métier côté serveur, ce repo inclut un **relai CORS minimal** (`worker/`, Cloudflare
-Worker gratuit) qui ne fait que transmettre les requêtes à pathe.fr en ajoutant les headers CORS.
+These endpoints don't send an `Access-Control-Allow-Origin` header: a browser can't call them
+directly from another domain. To stay "just a front-end" with no database or server-side business
+logic, this repo includes a **minimal CORS relay** (`worker/`, free Cloudflare Worker) that only
+forwards requests to pathe.fr while adding CORS headers.
 
-Déployer le relai :
+Deploy the relay:
 
 ```bash
 cd worker
 npm install
-npx wrangler login   # compte Cloudflare gratuit
+npx wrangler login   # free Cloudflare account
 npm run deploy
 ```
 
-Puis renseigner l'URL affichée dans `.env` (`VITE_API_PROXY_URL=...`).
+Then set the URL it prints in `.env` (`VITE_API_PROXY_URL=...`).
 
-## Algorithme de planification
+## Planning algorithm
 
-Pour une date et un rythme donnés :
+For a given date and pacing:
 
-- **Large** : tu arrives à l'heure annoncée (bandes-annonces incluses), il faut ≥20 min de battement après une séance dans le même cinéma pour la suivante.
-- **Standard** : pareil mais ≥10 min de battement.
-- **Serré** : tu arrives 15 min après l'heure annoncée (fin des bandes-annonces), ce qui permet d'enchaîner une séance qui se termine à la même heure où la suivante démarre, dans le même cinéma.
+- **Relaxed**: you arrive at the announced time (trailers included), ≥20 min of buffer is required after a session at the same cinema before the next one.
+- **Standard**: same but ≥10 min of buffer.
+- **Tight**: you arrive 15 min after the announced time (end of trailers), which allows back-to-back sessions where one ends exactly when the next starts, at the same cinema.
 
-Les trajets entre cinémas sont estimés à vol d'oiseau (× 1,3 pour approx. la route) avec une
-vitesse effective par mode de transport (vélo/transports/voiture) — aucune API de routing n'est
-utilisée, donc c'est une approximation, présentée comme telle dans l'UI.
+Travel between cinemas is estimated as the crow flies (× 1.3 to approximate road distance) with an
+effective speed per transport mode (bike/transit/car) — no routing API is used, so it's an
+approximation, presented as such in the UI.
 
-L'algorithme fait une recherche exacte par masque de bits sur les films sélectionnés (≤ 14) pour
-trouver la meilleure combinaison de séances compatibles, puis renvoie les meilleures options
-distinctes (nombre de films décroissant, puis confort).
+The algorithm does an exact bitmask search over the selected films (≤ 14) to find the best
+combination of compatible sessions, then returns the best distinct options (descending film count,
+then comfort).
 
 ## Stack
 
-Vite + React + TypeScript + Tailwind CSS v4 + React Router (`HashRouter`, pour un déploiement
-statique sans configuration serveur). Aucune dépendance runtime lourde.
+Vite + React + TypeScript + Tailwind CSS v4 + React Router (`HashRouter`, for a static deployment
+with no server configuration). No heavy runtime dependency.
 
-## Déploiement
+## Deployment
 
-N'importe quel hébergeur de fichiers statiques (Cloudflare Pages, Netlify, Vercel, GitHub Pages
-avec un dépôt public…) :
+Any static file host (Cloudflare Pages, Netlify, Vercel, GitHub Pages with a public repo…):
 
 ```bash
 npm run build   # -> dist/
