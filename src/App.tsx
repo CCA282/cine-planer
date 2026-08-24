@@ -1,7 +1,7 @@
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
-import { HistoryPage } from './pages/HistoryPage'
-import { SeenFilmsPage } from './pages/SeenFilmsPage'
+import { AllFilmsPage } from './pages/AllFilmsPage'
+import { PlanningsPage } from './pages/PlanningsPage'
 import { WizardPage } from './pages/WizardPage'
 
 export default function App() {
@@ -10,8 +10,8 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<WizardPage />} />
-          <Route path="/vus" element={<SeenFilmsPage />} />
-          <Route path="/historique" element={<HistoryPage />} />
+          <Route path="/films" element={<AllFilmsPage />} />
+          <Route path="/plannings" element={<PlanningsPage />} />
         </Routes>
       </Layout>
     </HashRouter>

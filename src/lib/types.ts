@@ -95,3 +95,10 @@ export interface ClosedPlanning {
   closedAt: string
   plan: Plan
 }
+
+export interface ActivePlanning {
+  id: string
+  date: string
+  createdAt: string
+  plan: Plan
+}

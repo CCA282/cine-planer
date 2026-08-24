@@ -6,6 +6,7 @@ import { FilmStep } from '../components/wizard/FilmStep'
 import { PreferencesStep } from '../components/wizard/PreferencesStep'
 import { ResultsStep } from '../components/wizard/ResultsStep'
 import { StepActionBar } from '../components/wizard/StepActionBar'
+import { useActivePlannings } from '../hooks/useActivePlannings'
 import { useCinemaProgram } from '../hooks/useCinemaProgram'
 import { usePlanHistory } from '../hooks/usePlanHistory'
 import { useSavedPreferences } from '../hooks/useSavedPreferences'
@@ -22,6 +23,7 @@ export function WizardPage() {
   const [saved, setSaved] = useSavedPreferences()
   const { isSeen, markManySeen } = useSeenFilms()
   const { closePlan } = usePlanHistory()
+  const { addActive, removeActive } = useActivePlannings()
 
   const [step, setStep] = useState<Step>(1)
   const [date, setDate] = useState(todayISO())
@@ -58,6 +60,11 @@ export function WizardPage() {
     setStartTimeMin(defaultStartTimeForDate(newDate))
   }
 
+  function handleConfirm(plan: Plan) {
+    setConfirmedPlan(plan)
+    addActive(plan)
+  }
+
   function handleClose() {
     if (!confirmedPlan) return
     markManySeen(
@@ -67,6 +74,7 @@ export function WizardPage() {
       })),
     )
     closePlan(confirmedPlan)
+    removeActive(confirmedPlan.id)
     setClosed(true)
   }
 
@@ -156,7 +164,7 @@ export function WizardPage() {
       filmSlugs={filmSlugs}
       prefs={prefs}
       onBack={() => setStep(3)}
-      onConfirm={setConfirmedPlan}
+      onConfirm={handleConfirm}
     />
   )
 }
