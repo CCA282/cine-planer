@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../components/Button'
 import { PlanSummary, PlanTimeline } from '../components/PlanTimeline'
@@ -38,6 +38,27 @@ export function WizardPage() {
   const [closed, setClosed] = useState(false)
 
   useCompactChrome(true)
+
+  // `saved` loads from Supabase asynchronously (see useCloudState), so it's still the pre-fetch
+  // default the first time this component renders — the useState initializers above miss it.
+  // Once the fetch resolves, `saved` becomes a new object reference; apply it exactly then, and
+  // only then: after that, prefs/cinemaSlugs are user-driven and flow the other way (see the
+  // effect below that writes them back to `saved`).
+  const initialSavedRef = useRef(saved)
+  const appliedSavedRef = useRef(false)
+  useEffect(() => {
+    if (appliedSavedRef.current || saved === initialSavedRef.current) return
+    appliedSavedRef.current = true
+    setCinemaSlugs(saved.cinemaSlugs)
+    setPrefs({ timing: saved.timing, travel: saved.travel, transportMode: saved.transportMode })
+  }, [saved])
+
+  useEffect(() => {
+    // The page shell doesn't scroll (see Layout.tsx) — only <main> does, so window.scrollTo
+    // has no effect here. Without this, switching steps keeps whatever scroll offset the
+    // previous step's (often longer) content had, landing mid-page instead of at the top.
+    document.querySelector('main')?.scrollTo({ top: 0 })
+  }, [step, confirmedPlan])
 
   function abort() {
     navigate('/')
