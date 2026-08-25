@@ -4,8 +4,10 @@ Pathé showtime planner: pick your nearby cinemas, the films you want to see, yo
 travel preferences — the app generates several day plans that maximize the number of films seen,
 timing and travel included.
 
-100% front-end: no database, no account. Everything is stored in the browser's `localStorage`
-(preferences, seen films, planning history).
+100% front-end: no custom backend, no server-side business logic. Planning itself works with no
+account (one-shot: pick cinemas/films/preferences, get a plan for that session). Saving anything
+— preferences for next time, seen films, planning history — requires a free account (Supabase Auth
++ Postgres, see below); without one, nothing persists across sessions.
 
 ## Features
 
@@ -15,7 +17,8 @@ timing and travel included.
   transport mode
 - Planning algorithm (exact search via bitmask) that generates several possible combinations,
   ranked by number of films then by comfort
-- History of closed plannings + tracking of already-seen films
+- Account (email + password, via Supabase Auth): reusable preferences, tracking of already-seen
+  films, history of closed plannings — all optional, the planner works without an account too
 
 ## Getting started
 
@@ -62,6 +65,40 @@ npm run deploy
 
 Then set the URL it prints in `.env` (`VITE_API_PROXY_URL=...`).
 
+## Compte et sauvegarde
+
+L'assistant de planification fonctionne sans compte (one-shot : le plan généré n'est visible que
+pour la session en cours). Se connecter permet de sauvegarder :
+
+- les préférences (cinémas, pacing, mode de transport) pour la prochaine visite,
+- les films déjà vus,
+- l'historique des plannings clôturés et les plannings en cours.
+
+C'est un [projet Supabase](https://supabase.com) gratuit (Auth email/mot de passe + table
+Postgres) qui gère ça — pas de backend custom. Setup :
+
+1. Créer un projet Supabase gratuit.
+2. Activer le provider Auth "Email".
+3. Créer la table de stockage clé/valeur générique (un compte, une paire `key`/`value` JSON par
+   donnée sauvegardée) :
+
+   ```sql
+   create table user_data (
+     user_id uuid references auth.users not null,
+     key text not null,
+     value jsonb not null,
+     updated_at timestamptz not null default now(),
+     primary key (user_id, key)
+   );
+   alter table user_data enable row level security;
+   create policy "own rows" on user_data for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+   ```
+
+4. Renseigner `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` (Project Settings → API) dans `.env`.
+
+Sans ces variables, l'app démarre quand même (avec un avertissement en console) mais reste
+uniquement en mode one-shot : impossible de se connecter ni de sauvegarder quoi que ce soit.
+
 ## Planning algorithm
 
 For a given date and pacing:
@@ -81,7 +118,8 @@ then comfort).
 ## Stack
 
 Vite + React + TypeScript + Tailwind CSS v4 + React Router (`HashRouter`, for a static deployment
-with no server configuration). No heavy runtime dependency.
+with no server configuration). Supabase (`@supabase/supabase-js`) for auth + storage — the only
+non-trivial runtime dependency.
 
 ## Deployment
 
@@ -90,3 +128,9 @@ Any static file host (Cloudflare Pages, Netlify, Vercel, GitHub Pages with a pub
 ```bash
 npm run build   # -> dist/
 ```
+
+This repo deploys to GitHub Pages via `.github/workflows/deploy.yml`, which reads
+`VITE_API_PROXY_URL`, `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from the repo's Actions
+variables (Settings → Secrets and variables → Actions → Variables). The Supabase anon key is
+meant to be public (it's the same key `supabase-js` ships to every browser) — access control is
+enforced server-side by the RLS policy on `user_data`, not by keeping this key secret.

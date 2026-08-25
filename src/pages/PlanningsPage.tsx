@@ -13,7 +13,7 @@ const CINEMA_MAP = new Map(listCinemas().map((c) => [c.slug, c]))
 const FILM_MAP = new Map((filmsSeed as Film[]).map((f) => [f.slug, f]))
 
 export function PlanningsPage() {
-  const { active, removeActive } = useActivePlannings()
+  const { active, removeActive, enabled } = useActivePlannings()
   const { history, closePlan } = usePlanHistory()
   const { markManySeen } = useSeenFilms()
   const [openId, setOpenId] = useState<string | null>(null)
@@ -33,6 +33,12 @@ export function PlanningsPage() {
     <div className="pb-4">
       <h2 className="mb-1 text-xl font-bold">Mes plannings</h2>
       <p className="mb-4 text-sm text-neutral-400">Tes plannings en cours et clôturés.</p>
+
+      {!enabled && (
+        <p className="mb-4 rounded-lg bg-amber-500/10 px-3 py-2 text-xs text-amber-300">
+          Connecte-toi (en haut) pour voir et sauvegarder tes plannings — sans compte, la planification reste en one-shot.
+        </p>
+      )}
 
       <h3 className="mb-2 text-sm font-semibold text-neutral-300">En cours</h3>
       {sortedActive.length === 0 && <p className="mb-6 py-4 text-center text-sm text-neutral-500">Aucun planning en cours.</p>}

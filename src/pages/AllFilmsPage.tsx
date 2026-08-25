@@ -12,7 +12,7 @@ export function AllFilmsPage() {
   const [query, setQuery] = useState('')
   const [showComingSoon, setShowComingSoon] = useState(false)
   const [seenOnly, setSeenOnly] = useState(false)
-  const { isSeen, markSeen, unmarkSeen } = useSeenFilms()
+  const { isSeen, markSeen, unmarkSeen, enabled } = useSeenFilms()
 
   useEffect(() => {
     let cancelled = false
@@ -55,6 +55,12 @@ export function AllFilmsPage() {
     <div className="pb-4">
       <h2 className="mb-1 text-xl font-bold">Tous les films</h2>
       <p className="mb-4 text-sm text-neutral-400">Coche les films que tu as déjà vus pour qu'ils soient écartés de tes prochains plannings.</p>
+
+      {!enabled && (
+        <p className="mb-4 rounded-lg bg-amber-500/10 px-3 py-2 text-xs text-amber-300">
+          Connecte-toi (en haut) pour sauvegarder les films vus — sinon la coche ne sera pas mémorisée.
+        </p>
+      )}
 
       <input
         type="text"

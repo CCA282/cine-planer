@@ -1,5 +1,5 @@
 import type { TimingPreference, TransportMode, TravelPreference } from '../lib/types'
-import { useLocalStorageState } from './useLocalStorageState'
+import { useCloudState } from './useCloudState'
 
 export interface SavedPreferences {
   cinemaSlugs: string[]
@@ -17,6 +17,8 @@ const DEFAULTS: SavedPreferences = {
   transportMode: null,
 }
 
+/** Signed out: preferences reset to defaults every session (one-shot planning). */
 export function useSavedPreferences() {
-  return useLocalStorageState<SavedPreferences>(KEY, DEFAULTS)
+  const { value, update, enabled } = useCloudState<SavedPreferences>(KEY, DEFAULTS)
+  return [value, update, enabled] as const
 }

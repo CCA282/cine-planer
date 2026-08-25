@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
 import type { ClosedPlanning, Plan } from '../lib/types'
-import { useLocalStorageState } from './useLocalStorageState'
+import { useCloudState } from './useCloudState'
 
 const KEY = 'cine-planner:closed-plannings'
 
+/** Signed out: `enabled` is false, closing a plan is a no-op (one-shot planning). */
 export function usePlanHistory() {
-  const [history, setHistory] = useLocalStorageState<ClosedPlanning[]>(KEY, [])
+  const { value: history, update: setHistory, enabled } = useCloudState<ClosedPlanning[]>(KEY, [])
 
   const closePlan = useCallback(
     (plan: Plan) => {
@@ -16,5 +17,5 @@ export function usePlanHistory() {
     [setHistory],
   )
 
-  return { history, closePlan }
+  return { history, closePlan, enabled }
 }

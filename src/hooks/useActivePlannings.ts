@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
 import type { ActivePlanning, Plan } from '../lib/types'
-import { useLocalStorageState } from './useLocalStorageState'
+import { useCloudState } from './useCloudState'
 
 const KEY = 'cine-planner:active-plannings'
 
+/** Signed out: `enabled` is false, tracking an active planning is a no-op (one-shot planning). */
 export function useActivePlannings() {
-  const [active, setActive] = useLocalStorageState<ActivePlanning[]>(KEY, [])
+  const { value: active, update: setActive, enabled } = useCloudState<ActivePlanning[]>(KEY, [])
 
   const addActive = useCallback(
     (plan: Plan) => {
@@ -21,5 +22,5 @@ export function useActivePlannings() {
     [setActive],
   )
 
-  return { active, addActive, removeActive }
+  return { active, addActive, removeActive, enabled }
 }

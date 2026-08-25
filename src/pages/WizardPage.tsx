@@ -25,7 +25,7 @@ export function WizardPage() {
   const navigate = useNavigate()
   const [saved, setSaved] = useSavedPreferences()
   const { isSeen, markManySeen } = useSeenFilms()
-  const { closePlan } = usePlanHistory()
+  const { closePlan, enabled } = usePlanHistory()
   const { addActive, removeActive } = useActivePlannings()
 
   const [step, setStep] = useState<Step>(1)
@@ -104,14 +104,21 @@ export function WizardPage() {
           <PlanTimeline plan={confirmedPlan} cinemas={cinemaMap} films={new Map(program.catalog.map((f) => [f.slug, f]))} />
         </div>
         {!closed ? (
-          <StepActionBar>
-            <Button variant="secondary" onClick={restart} className="flex-1">
-              Nouveau planning
-            </Button>
-            <Button onClick={handleClose} className="flex-1">
-              Clôturer ce planning
-            </Button>
-          </StepActionBar>
+          <div>
+            {!enabled && (
+              <p className="mb-3 rounded-lg bg-amber-500/10 px-3 py-2 text-xs text-amber-300">
+                Connecte-toi (en haut) pour clôturer ce planning — il sera enregistré dans ton historique et les films marqués comme vus.
+              </p>
+            )}
+            <StepActionBar>
+              <Button variant="secondary" onClick={restart} className="flex-1">
+                Nouveau planning
+              </Button>
+              <Button onClick={handleClose} disabled={!enabled} className="flex-1">
+                Clôturer ce planning
+              </Button>
+            </StepActionBar>
+          </div>
         ) : (
           <div>
             <p className="mb-4 rounded-lg bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">

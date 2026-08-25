@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
 import type { SeenFilm } from '../lib/types'
-import { useLocalStorageState } from './useLocalStorageState'
+import { useCloudState } from './useCloudState'
 
 const KEY = 'cine-planner:seen-films'
 
+/** Signed out: `enabled` is false, marking a film seen is a no-op (one-shot planning). */
 export function useSeenFilms() {
-  const [seenFilms, setSeenFilms] = useLocalStorageState<SeenFilm[]>(KEY, [])
+  const { value: seenFilms, update: setSeenFilms, enabled } = useCloudState<SeenFilm[]>(KEY, [])
 
   const isSeen = useCallback((filmSlug: string) => seenFilms.some((f) => f.filmSlug === filmSlug), [seenFilms])
 
@@ -34,5 +35,5 @@ export function useSeenFilms() {
     [setSeenFilms],
   )
 
-  return { seenFilms, isSeen, markSeen, markManySeen, unmarkSeen }
+  return { seenFilms, isSeen, markSeen, markManySeen, unmarkSeen, enabled }
 }
