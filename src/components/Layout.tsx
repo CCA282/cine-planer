@@ -25,7 +25,7 @@ export function Layout({ children }: { children: ReactNode }) {
         </header>
       )}
 
-      <main className="flex-1 overflow-y-auto px-4 pt-4">{children}</main>
+      <main className="flex-1 overflow-y-auto overscroll-contain px-4 pt-4">{children}</main>
 
       {!compact && (
         <nav className="h-14 shrink-0 border-t border-neutral-800 bg-neutral-950/95 backdrop-blur">

@@ -6,10 +6,19 @@
 
 html {
   color-scheme: light dark;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
   @apply bg-neutral-950 text-neutral-100 antialiased;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#root {
+  height: 100%;
 }
 
 ::-webkit-scrollbar {
