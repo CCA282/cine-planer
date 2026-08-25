@@ -20,6 +20,34 @@ account (one-shot: pick cinemas/films/preferences, get a plan for that session).
 - Account (email + password, via Supabase Auth): reusable preferences, tracking of already-seen
   films, history of closed plannings — all optional, the planner works without an account too
 
+## Architecture
+
+No custom backend: the SPA talks directly to two free third-party services, each doing exactly
+one job.
+
+```mermaid
+flowchart TD
+    User(("User's browser"))
+    FE["cine-planner (React SPA)<br/>static, hosted on GitHub Pages"]
+    Relay["Cloudflare Worker<br/>cine-planner-relay<br/>stateless CORS proxy"]
+    Pathe[("pathe.fr<br/>undocumented JSON API")]
+    Auth["Supabase Auth<br/>email + password"]
+    DB[("Supabase Postgres<br/>table user_data, RLS on auth.uid()")]
+
+    User --> FE
+    FE -- "catalog, programme,<br/>showtimes (GET)" --> Relay
+    Relay -- "proxy + CORS headers" --> Pathe
+    FE -- "sign up / sign in" --> Auth
+    FE -- "preferences, seen films,<br/>history — signed in only" --> DB
+```
+
+- The planning algorithm itself runs entirely client-side (see below) — no request round-trip
+  needed to generate a plan.
+- The Worker (`worker/`) is intentionally dumb: no auth, no storage, it only forwards allow-listed
+  GET requests to pathe.fr and adds CORS headers pathe.fr doesn't send itself.
+- Supabase is reached directly from the browser via `supabase-js` (Data API / PostgREST) — access
+  control is enforced by the RLS policy on `user_data`, not by a server in the middle.
+
 ## Getting started
 
 ```bash
@@ -65,22 +93,22 @@ npm run deploy
 
 Then set the URL it prints in `.env` (`VITE_API_PROXY_URL=...`).
 
-## Compte et sauvegarde
+## Account and saving data
 
-L'assistant de planification fonctionne sans compte (one-shot : le plan généré n'est visible que
-pour la session en cours). Se connecter permet de sauvegarder :
+The planning wizard works with no account (one-shot: the generated plan is only visible for the
+current session). Signing in lets you save:
 
-- les préférences (cinémas, pacing, mode de transport) pour la prochaine visite,
-- les films déjà vus,
-- l'historique des plannings clôturés et les plannings en cours.
+- preferences (cinemas, pacing, transport mode) for next time,
+- already-seen films,
+- the history of closed plannings and the plannings currently in progress.
 
-C'est un [projet Supabase](https://supabase.com) gratuit (Auth email/mot de passe + table
-Postgres) qui gère ça — pas de backend custom. Setup :
+A free [Supabase project](https://supabase.com) (Auth email/password + a Postgres table) handles
+this — no custom backend. Setup:
 
-1. Créer un projet Supabase gratuit.
-2. Activer le provider Auth "Email".
-3. Créer la table de stockage clé/valeur générique (un compte, une paire `key`/`value` JSON par
-   donnée sauvegardée) :
+1. Create a free Supabase project.
+2. Enable the "Email" Auth provider.
+3. Create the generic key/value storage table (one account, one `key`/`value` JSON pair per saved
+   piece of data):
 
    ```sql
    create table user_data (
@@ -101,10 +129,10 @@ Postgres) qui gère ça — pas de backend custom. Setup :
    users never call this table (see `useCloudState.ts`), so there's no reason to grant `anon`
    anything here.
 
-4. Renseigner `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` (Project Settings → API) dans `.env`.
+4. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (Project Settings → API) in `.env`.
 
-Sans ces variables, l'app démarre quand même (avec un avertissement en console) mais reste
-uniquement en mode one-shot : impossible de se connecter ni de sauvegarder quoi que ce soit.
+Without these variables, the app still starts (with a console warning) but stays in one-shot mode
+only: no sign-in, nothing gets saved.
 
 ## Planning algorithm
 
