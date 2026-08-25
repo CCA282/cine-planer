@@ -92,7 +92,14 @@ Postgres) qui gère ça — pas de backend custom. Setup :
    );
    alter table user_data enable row level security;
    create policy "own rows" on user_data for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+   grant select, insert, update, delete on table user_data to authenticated;
    ```
+
+   The last `grant` is required if "Automatically expose new tables" is disabled in Project
+   Settings → API (recommended by Supabase) — RLS alone filters *rows*, it doesn't substitute for
+   the table-level privilege Postgres checks first. Only `authenticated` needs it: signed-out
+   users never call this table (see `useCloudState.ts`), so there's no reason to grant `anon`
+   anything here.
 
 4. Renseigner `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` (Project Settings → API) dans `.env`.
 
