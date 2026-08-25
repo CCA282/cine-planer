@@ -3,7 +3,7 @@ import { useAuth } from '../lib/authContext'
 import { Button } from './Button'
 
 export function AccountMenu() {
-  const { user, signIn, signUp, signOut } = useAuth()
+  const { user, signIn, signUp, signOut, resetPassword } = useAuth()
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
 
@@ -32,37 +32,82 @@ export function AccountMenu() {
       <button onClick={() => setOpen((v) => !v)} className="text-xs font-semibold text-amber-400 hover:text-amber-300">
         Se connecter
       </button>
-      {open && <AuthPopover onDone={() => setOpen(false)} signIn={signIn} signUp={signUp} />}
+      {open && <AuthPopover onDone={() => setOpen(false)} signIn={signIn} signUp={signUp} resetPassword={resetPassword} />}
     </div>
   )
 }
+
+type Mode = 'login' | 'signup' | 'reset'
 
 function AuthPopover({
   onDone,
   signIn,
   signUp,
+  resetPassword,
 }: {
   onDone: () => void
   signIn: (email: string, password: string) => Promise<void>
   signUp: (email: string, password: string) => Promise<void>
+  resetPassword: (email: string) => Promise<void>
 }) {
-  const [mode, setMode] = useState<'login' | 'signup'>('login')
+  const [mode, setMode] = useState<Mode>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
+
+  function switchMode(next: Mode) {
+    setMode(next)
+    setError('')
+    setResetSent(false)
+  }
 
   async function submit() {
     setError('')
     setBusy(true)
     try {
       if (mode === 'signup') await signUp(email, password)
-      else await signIn(email, password)
-      onDone()
+      else if (mode === 'reset') {
+        await resetPassword(email)
+        setResetSent(true)
+      } else await signIn(email, password)
+      if (mode !== 'reset') onDone()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Erreur de connexion')
     }
     setBusy(false)
+  }
+
+  if (mode === 'reset') {
+    return (
+      <div className="absolute right-0 top-full z-10 mt-2 w-64 rounded-xl border border-neutral-800 bg-neutral-900 p-3 shadow-lg">
+        <p className="mb-2 text-sm font-semibold">Mot de passe oublié</p>
+        {resetSent ? (
+          <p className="mb-2 rounded-lg bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300">
+            Email envoyé à {email} — suis le lien pour choisir un nouveau mot de passe.
+          </p>
+        ) : (
+          <>
+            <p className="mb-2 text-xs text-neutral-400">On t'envoie un lien pour réinitialiser ton mot de passe.</p>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="email@exemple.com"
+              className="mb-2 w-full rounded-lg border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm placeholder:text-neutral-500 focus:border-amber-500 focus:outline-none"
+            />
+            {error && <p className="mb-2 text-xs text-red-400">{error}</p>}
+            <Button onClick={submit} disabled={busy || !email} className="mb-2 w-full">
+              Envoyer le lien
+            </Button>
+          </>
+        )}
+        <button onClick={() => switchMode('login')} className="w-full text-center text-xs text-neutral-400 hover:text-neutral-200">
+          ← Retour à la connexion
+        </button>
+      </div>
+    )
   }
 
   return (
@@ -82,12 +127,17 @@ function AuthPopover({
         placeholder="Mot de passe"
         className="mb-2 w-full rounded-lg border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm placeholder:text-neutral-500 focus:border-amber-500 focus:outline-none"
       />
+      {mode === 'login' && (
+        <button onClick={() => switchMode('reset')} className="mb-2 block text-xs text-neutral-400 hover:text-neutral-200">
+          Mot de passe oublié ?
+        </button>
+      )}
       {error && <p className="mb-2 text-xs text-red-400">{error}</p>}
       <Button onClick={submit} disabled={busy || !email || password.length < 6} className="mb-2 w-full">
         {mode === 'signup' ? 'Créer le compte' : 'Connexion'}
       </Button>
       <button
-        onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}
+        onClick={() => switchMode(mode === 'signup' ? 'login' : 'signup')}
         className="w-full text-center text-xs text-neutral-400 hover:text-neutral-200"
       >
         {mode === 'signup' ? 'Déjà un compte ? Se connecter' : "Pas encore de compte ? En créer un"}
