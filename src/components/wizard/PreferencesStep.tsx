@@ -44,7 +44,9 @@ export function PreferencesStep({
 
   return (
     <div>
-      <StepHeader step={3} total={4} title="Tes préférences" subtitle="Ça, on s'en souvient pour la prochaine fois." onAbort={onAbort} />
+      <div className="sticky top-0 z-10 -mx-4 -mt-4 bg-neutral-950 px-4 pb-2.5 pt-4">
+        <StepHeader step={3} total={4} title="Tes préférences" subtitle="Ça, on s'en souvient pour la prochaine fois." onAbort={onAbort} />
+      </div>
 
       <div className="mb-5">
         <p className="mb-2 text-sm font-semibold">Rythme des séances</p>
