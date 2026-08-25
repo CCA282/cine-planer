@@ -167,6 +167,29 @@ Vite + React + TypeScript + Tailwind CSS v4 + React Router (`HashRouter`, for a 
 with no server configuration). Supabase (`@supabase/supabase-js`) for auth + storage — the only
 non-trivial runtime dependency.
 
+## Installing as an app
+
+`vite-plugin-pwa` generates a web manifest + service worker at build time, so the site is
+installable ("Add to Home Screen" on iOS Safari, the install prompt on Android Chrome) and opens
+without browser chrome (`display: standalone`). The service worker only precaches the static app
+shell (JS/CSS/HTML/icons) for faster reloads — it doesn't cache Pathé data or Supabase responses,
+so the app still needs a network connection to actually plan anything.
+
+Icons live in `public/pwa-icons/`, generated from `public/favicon.svg` via `rsvg-convert` +
+`magick` (ImageMagick's own SVG rasterizer mangles this file's masks/gradients — `librsvg` renders
+it correctly). Regenerate them if `favicon.svg` changes:
+
+```bash
+rsvg-convert -w 130 -h 130 public/favicon.svg -o /tmp/logo-130.png
+rsvg-convert -w 346 -h 346 public/favicon.svg -o /tmp/logo-346.png
+rsvg-convert -w 300 -h 300 public/favicon.svg -o /tmp/logo-300.png
+rsvg-convert -w 120 -h 120 public/favicon.svg -o /tmp/logo-120.png
+magick /tmp/logo-130.png -background none -gravity center -extent 192x192 public/pwa-icons/icon-192.png
+magick /tmp/logo-346.png -background none -gravity center -extent 512x512 public/pwa-icons/icon-512.png
+magick /tmp/logo-300.png -background "#0a0a0a" -gravity center -extent 512x512 public/pwa-icons/maskable-512.png
+magick /tmp/logo-120.png -background "#0a0a0a" -gravity center -extent 180x180 public/pwa-icons/apple-touch-icon.png
+```
+
 ## Deployment
 
 Any static file host (Cloudflare Pages, Netlify, Vercel, GitHub Pages with a public repo…):
