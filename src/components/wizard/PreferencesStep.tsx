@@ -16,6 +16,7 @@ const TRAVEL_OPTIONS: { value: TravelPreference; label: string; hint: string }[]
 ]
 
 const TRANSPORT_OPTIONS: { value: TransportMode; label: string }[] = [
+  { value: 'walk', label: '🚶 À pied' },
   { value: 'bike', label: '🚲 Vélo' },
   { value: 'transit', label: '🚌 Transports' },
   { value: 'car', label: '🚗 Voiture' },

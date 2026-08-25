@@ -39,7 +39,7 @@ export interface DayAvailability {
 
 export type TimingPreference = 'large' | 'standard' | 'tight'
 export type TravelPreference = 'none' | 'minimal' | 'ok'
-export type TransportMode = 'bike' | 'transit' | 'car'
+export type TransportMode = 'walk' | 'bike' | 'transit' | 'car'
 
 export interface UserPreferences {
   timing: TimingPreference

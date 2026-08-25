@@ -10,6 +10,7 @@ import type { Cinema, TransportMode } from './types'
 const DETOUR_FACTOR = 1.3
 
 const MODE_CONFIG: Record<TransportMode, { speedKmh: number; overheadMin: number }> = {
+  walk: { speedKmh: 4.5, overheadMin: 0 },
   bike: { speedKmh: 15, overheadMin: 3 },
   transit: { speedKmh: 18, overheadMin: 8 },
   car: { speedKmh: 22, overheadMin: 6 },
@@ -23,6 +24,7 @@ export function estimateTravelMinutes(from: Cinema, to: Cinema, mode: TransportM
 }
 
 export const TRANSPORT_LABELS: Record<TransportMode, string> = {
+  walk: 'À pied',
   bike: 'Vélo',
   transit: 'Transports en commun',
   car: 'Voiture',

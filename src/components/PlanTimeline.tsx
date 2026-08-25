@@ -3,7 +3,7 @@ import type { Cinema, Film, Plan } from '../lib/types'
 import { Badge } from './Badge'
 import { PosterImage } from './PosterImage'
 
-const TRANSPORT_ICON: Record<string, string> = { bike: '🚲', transit: '🚌', car: '🚗' }
+const TRANSPORT_ICON: Record<string, string> = { walk: '🚶', bike: '🚲', transit: '🚌', car: '🚗' }
 
 export function PlanTimeline({ plan, cinemas, films }: { plan: Plan; cinemas: Map<string, Cinema>; films: Map<string, Film> }) {
   return (
