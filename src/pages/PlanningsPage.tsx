@@ -59,9 +59,14 @@ export function PlanningsPage() {
                   <PlanTimeline plan={item.plan} cinemas={CINEMA_MAP} films={FILM_MAP} />
                 </div>
               )}
-              <Button variant="secondary" onClick={() => handleClose(item.id)} className="w-full">
-                Clôturer ce planning
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="danger" onClick={() => removeActive(item.id)} className="flex-1">
+                  Annuler
+                </Button>
+                <Button variant="secondary" onClick={() => handleClose(item.id)} className="flex-1">
+                  Clôturer ce planning
+                </Button>
+              </div>
             </li>
           )
         })}
