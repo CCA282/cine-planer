@@ -90,7 +90,7 @@ export function WizardPage() {
   if (confirmedPlan) {
     return (
       <div>
-        <div className="sticky top-0 z-10 -mx-4 -mt-4 bg-neutral-950 px-4 pb-2.5 pt-4">
+        <div className="sticky top-0 z-10 -mx-4 bg-neutral-950 px-4 pb-2.5 pt-4">
           <div className="mb-1 flex items-center justify-between gap-2">
             <h2 className="text-xl font-bold">{closed ? 'Planning clôturé 🎉' : 'Ton planning'}</h2>
             <button onClick={abort} aria-label="Fermer" className="shrink-0 rounded-full p-1 text-lg leading-none text-neutral-500 hover:text-neutral-300">

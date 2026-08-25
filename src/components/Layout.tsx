@@ -25,7 +25,10 @@ export function Layout({ children }: { children: ReactNode }) {
         </header>
       )}
 
-      <main className="flex-1 overflow-y-auto overscroll-contain px-4 pt-4">{children}</main>
+      {/* No top padding in compact mode: each wizard step's sticky header owns its own
+          top padding so it can sit flush at top:0 — padding here would leave a gap the
+          negative-margin trick can't reliably cancel for a sticky child. */}
+      <main className={`flex-1 overflow-y-auto overscroll-contain px-4 ${compact ? '' : 'pt-4'}`}>{children}</main>
 
       {!compact && (
         <nav className="h-14 shrink-0 border-t border-neutral-800 bg-neutral-950/95 backdrop-blur">
