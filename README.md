@@ -130,9 +130,20 @@ this — no custom backend. Setup:
    anything here.
 
 4. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (Project Settings → API) in `.env`.
+5. Authentication → URL Configuration → add every URL the app is served from (e.g.
+   `http://localhost:5173` for dev, `https://cca282.github.io/cine-planner/` for prod) to
+   **Redirect URLs**. Required for "forgot password" emails: Supabase only honors the `redirectTo`
+   passed to `resetPasswordForEmail` if it matches one of these — otherwise the link in the email
+   silently falls back to the project's default Site URL instead of bringing the user back to the
+   app.
 
-Without these variables, the app still starts (with a console warning) but stays in one-shot mode
-only: no sign-in, nothing gets saved.
+Without `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY`, the app still starts (with a console warning)
+but stays in one-shot mode only: no sign-in, nothing gets saved.
+
+Password reset: "Mot de passe oublié ?" on the sign-in form sends a reset email
+(`resetPasswordForEmail`); the emailed link brings the user back to the app in a recovery session,
+which triggers a "choose a new password" prompt (`PasswordRecoveryModal`) on top of whichever page
+they land on.
 
 ## Planning algorithm
 
