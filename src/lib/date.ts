@@ -14,17 +14,6 @@ export function defaultStartTimeForDate(iso: string): number {
   return iso === todayISO() ? nowMinutes() : 0
 }
 
-export function minutesToTimeInputValue(min: number): string {
-  const h = Math.floor(min / 60) % 24
-  const m = min % 60
-  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
-}
-
-export function timeInputValueToMinutes(value: string): number {
-  const [h, m] = value.split(':').map(Number)
-  return h * 60 + m
-}
-
 export function minutesToLabel(min: number): string {
   const h = Math.floor(min / 60) % 24
   const m = min % 60

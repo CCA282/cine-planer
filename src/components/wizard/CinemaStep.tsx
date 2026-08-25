@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Button } from '../Button'
-import { addDays, formatDateLabel, minutesToTimeInputValue, timeInputValueToMinutes, todayISO } from '../../lib/date'
+import { TimePicker } from '../TimePicker'
+import { addDays, formatDateLabel, todayISO } from '../../lib/date'
 import { getCurrentPosition, sortByDistance } from '../../lib/geo'
 import { listCinemas } from '../../lib/patheClient'
 import type { Cinema, CinemaWithDistance } from '../../lib/types'
@@ -91,17 +92,12 @@ export function CinemaStep({
         ))}
       </div>
 
-      <label className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-neutral-800 bg-neutral-900 px-3 py-2.5">
+      <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-neutral-800 bg-neutral-900 px-3 py-2.5">
         <span className="text-sm font-medium text-neutral-300">
           À partir de quelle heure ?{date === todayISO() && <span className="text-neutral-500"> (pré-rempli avec l'heure actuelle)</span>}
         </span>
-        <input
-          type="time"
-          value={minutesToTimeInputValue(startTimeMin)}
-          onChange={(e) => onStartTimeChange(timeInputValueToMinutes(e.target.value))}
-          className="rounded-lg border border-neutral-700 bg-neutral-950 px-2 py-1 text-sm text-neutral-100 focus:border-amber-500 focus:outline-none"
-        />
-      </label>
+        <TimePicker minutes={startTimeMin} onChange={onStartTimeChange} />
+      </div>
 
       {selectedCinemas.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
